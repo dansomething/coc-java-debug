@@ -1,0 +1,61 @@
+{
+  "name": "coc-java-debug",
+  "version": "1.0.0",
+  "description": "Java langauage debugging extension for coc.nvim",
+  "main": "lib/index.js",
+  "engines": {
+    "coc": ">=0.0.66"
+  },
+  "keywords": [
+    "coc.nvim",
+    "java",
+    "debug",
+    "debugging",
+    "debugger"
+  ],
+  "author": "dansomething",
+  "license": "EPL-1.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dansomething/coc-java-debug"
+  },
+  "bugs": "https://github.com/dansomething/coc-java-debug/issues",
+  "scripts": {
+    "clean": "rimraf lib",
+    "build": "webpack",
+    "prepare": "npx npm-run-all clean build"
+  },
+  "activationEvents": [
+    "onLanguage:java"
+  ],
+  "contributes": {
+    "breakpoints": [
+      {
+        "language": "java"
+      }
+    ],
+    "javaExtensions": [
+      "./server/com.microsoft.java.debug.plugin-0.24.0.jar"
+    ],
+    "commands": [
+      {
+        "command": "java.debug.start",
+        "title": "Start Java Debugger",
+        "category": "Java"
+      }
+    ]
+  },
+  "devDependencies": {
+    "@chemzqm/tsconfig": "^0.0.3",
+    "@chemzqm/tslint-config": "^1.0.18",
+    "@types/node": "^12.0.5",
+    "coc.nvim": "^0.0.74",
+    "gulp": "^4.0.2",
+    "rimraf": "^3.0.0",
+    "ts-loader": "^6.2.1",
+    "tslint": "^6.0.0",
+    "typescript": "^3.7.5",
+    "webpack": "^4.41.5",
+    "webpack-cli": "^3.3.10"
+  }
+}
