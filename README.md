@@ -7,9 +7,13 @@ An experimental [extension for coc.nvim](https://github.com/neoclide/coc.nvim/wi
 
 *This being experimental, I can not make any guarantees about this plugin or example config working for your setup.*
 
+*Also, Java is [partially supported](https://github.com/puremourning/vimspector#java---partially-supported) in Vimspector.*
+
 ### Prerequisites
 
 Be sure to have the [coc-java](https://github.com/neoclide/coc-java#quick-start) extension installed.
+
+    :CocInstall coc-java
 
 ### Install
 
@@ -56,7 +60,7 @@ Add a `.vimspector.json` file in the root directory of your Java project with th
       }
     }
 
-*Review the [Vimspector config](https://puremourning.github.io/vimspector/configuration.html) docs for what's possible with this file.*
+*Review the [Vimspector config](https://puremourning.github.io/vimspector/configuration.html) docs for what's possible within this file.*
 
 #### Configure Vim
 
