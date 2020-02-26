@@ -9,6 +9,23 @@ An experimental [extension for coc.nvim](https://github.com/neoclide/coc.nvim/wi
 
 *Also, Java is [partially supported](https://github.com/puremourning/vimspector#java---partially-supported) in Vimspector.*
 
+## Features
+
+- Integration with [Vimspector](https://puremourning.github.io/vimspector-web/)
+
+## Available commands
+
+The following commands are available:
+
+- `java.debug.vimspector.start`: Launch Vimspector and connect it to the [Java Debug Server](https://github.com/Microsoft/java-debug).
+
+## Supported settings
+
+The following settings are supported:
+
+- `java.debug.vimspector.profile` : Specifies the Vimspector [profile](https://puremourning.github.io/vimspector/configuration.html#debug-profile-configuration) to activate when launching.
+- `java.debug.vimspector.substitution.adapterPort` : Specifies the Vimspector [adapter port](https://puremourning.github.io/vimspector/configuration.html#adapter-configurations) substitution name in `.vimspector.json`. The actual port number will replace this value in the Vimspector config when the debug server is started.
+
 ### Prerequisites
 
 Be sure to have the [coc-java](https://github.com/neoclide/coc-java#quick-start) extension installed.
@@ -23,7 +40,7 @@ Be sure to have the [coc-java](https://github.com/neoclide/coc-java#quick-start)
 
     :CocUninstall coc-java-debug
 
-## Example usage with [Vimspector](https://puremourning.github.io/vimspector-web/)
+## Usage with [Vimspector](https://puremourning.github.io/vimspector-web/)
 
 This example will use Vimspector as the user interface for interacting with the [Java Debug Server](https://github.com/Microsoft/java-debug) from within Vim.
 
@@ -64,7 +81,14 @@ Add a `.vimspector.json` file in the root directory of your Java project with th
 
 #### Configure Vim
 
-Add the following config to your `~/.vimrc` file or wherever appropriate for your Vim setup.
+This extension now provides `:CocCommand java.debug.vimspector.start` to simplify setup.
+Add the following config to your `~/.vimrc` file or wherever appropriate for your Vim setup for convenience.
+
+    nmap <F1> :CocCommand java.debug.vimspector.start<CR>
+
+Or if you'd prefer to launch Vimspector directly,
+add the following config to your `~/.vimrc` file or wherever appropriate for your Vim setup.
+This will bypass using `:CocCommand` to start the debug session.
 
     function! JavaStartDebugCallback(err, port)
       execute "cexpr! 'Java debug started on port: " . a:port . "'"
@@ -78,7 +102,8 @@ Add the following config to your `~/.vimrc` file or wherever appropriate for you
     nmap <F1> :call JavaStartDebug()<CR>
 
 This will provide a way to start the Java debug server through coc.vim and then tell Vimspector which port to use to connect to the debug
-server. It maps the `F1` key to kick things off, but you can change this to whatever you want.
+server. It maps the `F1` key to kick things off, but you can change this key mapping to whatever you want.
+
 
 #### Start the debug session
 

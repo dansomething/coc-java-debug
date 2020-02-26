@@ -1,10 +1,10 @@
 {
   "name": "coc-java-debug",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "description": "Java langauage debugging extension for coc.nvim",
   "main": "lib/index.js",
   "engines": {
-    "coc": ">=0.0.66"
+    "coc": ">=0.0.74"
   },
   "keywords": [
     "coc.nvim",
@@ -14,7 +14,7 @@
     "debugger"
   ],
   "author": "dansomething",
-  "license": "EPL-1.0",
+  "license": "EPL-2.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/dansomething/coc-java-debug"
@@ -37,10 +37,28 @@
     "javaExtensions": [
       "./server/com.microsoft.java.debug.plugin-0.24.0.jar"
     ],
+    "configuration": {
+      "type": "object",
+      "title": "Java Debug Configuration",
+      "properties": {
+        "java.debug.vimspector.profile": {
+          "type": "string",
+          "default": "Java Attach",
+          "description": "Specifies the Vimspector profile to activate when launching.",
+          "scope": "window"
+        },
+        "java.debug.vimspector.substitution.adapterPort": {
+          "type": "string",
+          "default": "AdapterPort",
+          "description": "Specifies the Vimspector adapter port substitution name in `.vimspector.json`. The actual port number will replace this value in the Vimspector config when the debug server is started.",
+          "scope": "window"
+        }
+      }
+    },
     "commands": [
       {
-        "command": "java.debug.start",
-        "title": "Start Java Debugger",
+        "command": "java.debug.vimspector.start",
+        "title": "Launch Vimspector and connect it to the Java Debug Server.",
         "category": "Java"
       }
     ]
