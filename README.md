@@ -141,3 +141,7 @@ That's it! You may now step debug your way through a Java program from within Vi
 
 *Note, if you use a Java debug port different than `5005` you will need to change that value in your `.vimspector.json` file. It is also
 possible to configure this port dynamically in Vimspector in the same manner as the debug adapter port.*
+
+## License
+
+EPL 2.0, See [LICENSE](LICENSE) for more information.

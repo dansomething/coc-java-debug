@@ -1,6 +1,6 @@
 {
   "name": "coc-java-debug",
-  "version": "1.1.0",
+  "version": "0.25.0",
   "description": "Java langauage debugging extension for coc.nvim",
   "main": "lib/index.js",
   "engines": {
