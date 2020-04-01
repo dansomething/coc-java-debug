@@ -22,8 +22,46 @@ async function startVimspector(): Promise<any> {
   const config = workspace.getConfiguration('java.debug')
   const profile = config.get<string>('vimspector.profile')
   const adapterPort = config.get<string>('vimspector.substitution.adapterPort')
-  const vimspectorSettings = `{ "configuration": "${profile}", "${adapterPort}": ${debugPort} }`
+  const overrides = getOverrides(arguments)
+  const settings = {
+    configuration: profile,
+    [adapterPort]: debugPort,
+    ...overrides
+  }
+  const vimspectorSettings = JSON.stringify(settings)
 
+  // See https://github.com/puremourning/vimspector#launch-with-options
   workspace.showMessage(`Launching Vimspector with settings: ${vimspectorSettings}`)
   return workspace.nvim.eval(`vimspector#LaunchWithSettings(${vimspectorSettings})`)
+}
+
+/**
+ * Converts the input command arguments to an object to be applied as
+ * Vimspector settings overides.
+ *
+ * This also handles the possibily of the command args being split by spaces
+ * before being passed to the callback.
+ */
+function getOverrides(rawArguments: IArguments): object {
+  let args = ''
+  if (rawArguments.length == 0) {
+    args = rawArguments[0]
+  } else if (rawArguments.length >= 1) {
+    for (const v of rawArguments) {
+      args += v
+    }
+  }
+  return parseOverrides(args)
+}
+
+function parseOverrides(args: string): object {
+  let overrides = {}
+  if (args) {
+    try {
+      overrides = JSON.parse(args)
+    } catch (e) {
+      workspace.showMessage(`Expected valid JSON for Vimspector settings, but got: ${args}`, 'error')
+    }
+  }
+  return overrides
 }

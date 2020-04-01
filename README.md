@@ -5,7 +5,8 @@ An experimental [extension for coc.nvim](https://github.com/neoclide/coc.nvim/wi
 
 #### Disclaimer
 
-*This being experimental, I can not make any guarantees about this plugin or example config working for your setup.*
+*This being experimental, I can not make any guarantees about this plugin or example config working for your setup, but
+hopefully it will.*
 
 *Also, Java is [partially supported](https://github.com/puremourning/vimspector#java---partially-supported) in Vimspector.*
 
@@ -18,13 +19,24 @@ An experimental [extension for coc.nvim](https://github.com/neoclide/coc.nvim/wi
 The following commands are available:
 
 - `java.debug.vimspector.start`: Launch Vimspector and connect it to the [Java Debug Server](https://github.com/Microsoft/java-debug).
+    
+
+### Command Arguments
+
+Optionally, `java.debug.vimspector.start` will accept a JSON string of settings which will be passed to Vimspector via ["LaunchWithSettings"](https://github.com/puremourning/vimspector#launch-with-options).
+
+Here's how you would call it from Vim:
+
+    :CocCommand java.debug.vimspector.start {"configuration":"Run Test","Test":"Name of the test"}
+
+These settings will take precedence when launching Vimspector.
 
 ## Supported settings
 
 The following settings are supported:
 
-- `java.debug.vimspector.profile` : Specifies the Vimspector [profile](https://puremourning.github.io/vimspector/configuration.html#debug-profile-configuration) to activate when launching.
-- `java.debug.vimspector.substitution.adapterPort` : Specifies the Vimspector [adapter port](https://puremourning.github.io/vimspector/configuration.html#adapter-configurations) substitution name in `.vimspector.json`. The actual port number will replace this value in the Vimspector config when the debug server is started.
+- `java.debug.vimspector.profile` : Specifies the Vimspector [profile](https://puremourning.github.io/vimspector/configuration.html#debug-profile-configuration) to activate when launching. Defaults to `Java Attach`.
+- `java.debug.vimspector.substitution.adapterPort` : Specifies the Vimspector [adapter port](https://puremourning.github.io/vimspector/configuration.html#adapter-configurations) substitution name in `.vimspector.json`. The actual port number will replace this value in the Vimspector config when the debug server is started. Defaults to `AdapterPort`.
 
 ### Prerequisites
 
