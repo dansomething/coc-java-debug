@@ -1,14 +1,29 @@
 # coc-java-debug
 
-An experimental [extension for coc.nvim](https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions) to enable the
-[Java Debug Server](https://github.com/Microsoft/java-debug) extension for the [jdt.ls](https://github.com/eclipse/eclipse.jdt.ls) language server as loaded by [coc-java](https://github.com/neoclide/coc-java).
+An [extension for coc.nvim](https://github.com/neoclide/coc.nvim/wiki/Using-coc-extensions) to enable the
+[Java Debug Server](https://github.com/Microsoft/java-debug) extension for the [jdt.ls](https://github.com/eclipse/eclipse.jdt.ls) language server that is loaded by [coc-java](https://github.com/neoclide/coc-java).
 
 #### Disclaimer
 
-*This being experimental, I can not make any guarantees about this plugin or example config working for your setup, but
-hopefully it will.*
+*This began as an experiment, but generally "works for me". Your mileage may vary.*
 
 *Also, Java is [partially supported](https://github.com/puremourning/vimspector#java---partially-supported) in Vimspector.*
+
+### Prerequisites
+
+Be sure to have the [coc-java](https://github.com/neoclide/coc-java#quick-start) extension installed.
+
+    :CocInstall coc-java
+
+You will also need to [install the Vimspector](https://github.com/puremourning/vimspector#installation) plugin for Vim.
+
+### Install
+
+    :CocInstall coc-java-debug
+
+### Uninstall
+
+    :CocUninstall coc-java-debug
 
 ## Features
 
@@ -35,22 +50,8 @@ These settings will take precedence when launching Vimspector.
 
 The following settings are supported:
 
-- `java.debug.vimspector.profile` : Specifies the Vimspector [profile](https://puremourning.github.io/vimspector/configuration.html#debug-profile-configuration) to activate when launching. Defaults to `Java Attach`.
-- `java.debug.vimspector.substitution.adapterPort` : Specifies the Vimspector [adapter port](https://puremourning.github.io/vimspector/configuration.html#adapter-configurations) substitution name in `.vimspector.json`. The actual port number will replace this value in the Vimspector config when the debug server is started. Defaults to `AdapterPort`.
-
-### Prerequisites
-
-Be sure to have the [coc-java](https://github.com/neoclide/coc-java#quick-start) extension installed.
-
-    :CocInstall coc-java
-
-### Install
-
-    :CocInstall https://github.com/dansomething/coc-java-debug
-
-### Uninstall
-
-    :CocUninstall coc-java-debug
+- `java.debug.vimspector.profile` : Specifies the Vimspector [profile](https://puremourning.github.io/vimspector/configuration.html#debug-profile-configuration) to activate when launching. Defaults to `Java Attach`
+- `java.debug.vimspector.substitution.adapterPort` : Specifies the Vimspector [adapter port](https://puremourning.github.io/vimspector/configuration.html#adapter-configurations) substitution name in `.vimspector.json`. The actual port number will replace this value in the Vimspector config when the debug server is started. Defaults to `AdapterPort`
 
 ## Usage with [Vimspector](https://puremourning.github.io/vimspector-web/)
 
@@ -98,9 +99,12 @@ Add the following config to your `~/.vimrc` file or wherever appropriate for you
 
     nmap <F1> :CocCommand java.debug.vimspector.start<CR>
 
-Or if you'd prefer to launch Vimspector directly,
+##### Alternative Configuration
+
+If you'd prefer to launch Vimspector from yourself then
 add the following config to your `~/.vimrc` file or wherever appropriate for your Vim setup.
-This will bypass using `:CocCommand` to start the debug session.
+
+*Note, this will bypass using the `:CocCommand` documented above to start the debug session.*
 
     function! JavaStartDebugCallback(err, port)
       execute "cexpr! 'Java debug started on port: " . a:port . "'"
@@ -149,7 +153,7 @@ Now, open the file you want to debug in Vim and set a [breakpoint with Vimspecto
 Finally, start the debug session in Vim by hitting the `F1` key or use your custom key combination if you have altered the
 config from this example. This should result in Vimspector opening in a new tab with your Java program paused at the breakpoint you set.
 
-That's it! You may now step debug your way through a Java program from within Vim.
+That's it! You may now [step debug](https://github.com/puremourning/vimspector#mappings) your way through a Java program from within Vim.
 
 *Note, if you use a Java debug port different than `5005` you will need to change that value in your `.vimspector.json` file. It is also
 possible to configure this port dynamically in Vimspector in the same manner as the debug adapter port.*
