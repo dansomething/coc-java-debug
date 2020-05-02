@@ -63,7 +63,8 @@ It will demonstrate attaching to a Java program that is running with remote debu
 
 Install the [Vimspector](https://github.com/puremourning/vimspector#installation) plugin for Vim.
 
-Add a `.vimspector.json` file in the root directory of your Java project with the following contents.
+Add a `.vimspector.json` file in the root directory of your Java project with the following contents. Note, 
+don't change `"${AdapterPort}"`. See issue #3 for an explanation of how this port value works.
 
     {
       "adapters": {
