@@ -50,7 +50,7 @@ These settings will take precedence when launching Vimspector.
 
 The following settings are supported in [CocConfig](https://github.com/neoclide/coc.nvim/wiki/Using-the-configuration-file#configuration-file-resolve):
 
-- `java.debug.vimspector.profile` : (Deprecated) Use `\"default\":true` in Vimspector.json instead. Specifies the Vimspector [profile](https://puremourning.github.io/vimspector/configuration.html#debug-profile-configuration) to activate when launching. Set to `null` to be prompted if multiple configurations are found and no default is set. Defaults to `Java Attach`
+- `java.debug.vimspector.profile` : (Deprecated) Use `"default":true` in Vimspector.json instead. Specifies the Vimspector [profile](https://puremourning.github.io/vimspector/configuration.html#debug-profile-configuration) to activate when launching. Set to `null` to be prompted if multiple configurations are found and no default is set. Defaults to `Java Attach`
 - `java.debug.vimspector.substitution.adapterPort` : Specifies the Vimspector [adapter port](https://puremourning.github.io/vimspector/configuration.html#adapter-configurations) substitution name in `.vimspector.json`. The actual port number will replace this value in the Vimspector config when the debug server is started. Defaults to `AdapterPort`
 
 ## Usage with [Vimspector](https://puremourning.github.io/vimspector-web/)
