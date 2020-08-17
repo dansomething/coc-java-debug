@@ -47,9 +47,11 @@ function getOverrides(rawArguments: IArguments): object {
   if (rawArguments.length == 0) {
     args = rawArguments[0]
   } else if (rawArguments.length >= 1) {
+    const a = []
     for (const v of rawArguments) {
-      args += v
+      a.push(v)
     }
+    args = a.join(' ')
   }
   return parseOverrides(args)
 }
