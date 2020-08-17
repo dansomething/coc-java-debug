@@ -34,7 +34,7 @@ You will also need to [install the Vimspector](https://github.com/puremourning/v
 The following commands are available:
 
 - `java.debug.vimspector.start`: Launch Vimspector and connect it to the [Java Debug Server](https://github.com/Microsoft/java-debug).
-    
+
 
 ### Command Arguments
 
@@ -48,9 +48,9 @@ These settings will take precedence when launching Vimspector.
 
 ## Supported settings
 
-The following settings are supported:
+The following settings are supported in [CocConfig](https://github.com/neoclide/coc.nvim/wiki/Using-the-configuration-file#configuration-file-resolve):
 
-- `java.debug.vimspector.profile` : Specifies the Vimspector [profile](https://puremourning.github.io/vimspector/configuration.html#debug-profile-configuration) to activate when launching. Defaults to `Java Attach`
+- `java.debug.vimspector.profile` : (Deprecated. Use `java.debug.vimspector.configuration` instead.) Specifies the Vimspector [profile](https://puremourning.github.io/vimspector/configuration.html#debug-profile-configuration) to activate when launching. Set to `null` to be prompted if multiple configurations are found. Defaults to `Java Attach`
 - `java.debug.vimspector.substitution.adapterPort` : Specifies the Vimspector [adapter port](https://puremourning.github.io/vimspector/configuration.html#adapter-configurations) substitution name in `.vimspector.json`. The actual port number will replace this value in the Vimspector config when the debug server is started. Defaults to `AdapterPort`
 
 ## Usage with [Vimspector](https://puremourning.github.io/vimspector-web/)
@@ -63,7 +63,7 @@ It will demonstrate attaching to a Java program that is running with remote debu
 
 Install the [Vimspector](https://github.com/puremourning/vimspector#installation) plugin for Vim.
 
-Add a `.vimspector.json` file in the root directory of your Java project with the following contents. Note, 
+Add a `.vimspector.json` file in the root directory of your Java project with the following contents. Note,
 don't change `"${AdapterPort}"`. See [issue #3](https://github.com/dansomething/coc-java-debug/issues/3#issuecomment-622075010) for an explanation of how this port value works.
 
     {
@@ -75,6 +75,7 @@ don't change `"${AdapterPort}"`. See [issue #3](https://github.com/dansomething/
       },
       "configurations": {
         "Java Attach": {
+          "default": true,
           "adapter": "java-debug-server",
           "configuration": {
             "request": "attach",

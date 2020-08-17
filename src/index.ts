@@ -19,15 +19,20 @@ async function startVimspector(): Promise<any> {
 
   workspace.showMessage(`Java debug server started on port: ${debugPort}`)
 
-  const config = workspace.getConfiguration('java.debug')
-  const profile = config.get<string>('vimspector.profile')
-  const adapterPort = config.get<string>('vimspector.substitution.adapterPort')
+  const debugConfig = workspace.getConfiguration('java.debug')
+  const profile = debugConfig.get<string>('vimspector.profile')
+  const adapterPort = debugConfig.get<string>('vimspector.substitution.adapterPort')
   const overrides = getOverrides(arguments)
+  const defaults = {}
+  if (profile) {
+    defaults['configuration'] = profile
+  }
   const settings = {
-    configuration: profile,
     [adapterPort]: debugPort,
+    ...defaults,
     ...overrides
   }
+
   const vimspectorSettings = JSON.stringify(settings)
 
   // See https://github.com/puremourning/vimspector#launch-with-options
