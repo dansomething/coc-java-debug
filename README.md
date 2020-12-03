@@ -138,7 +138,7 @@ For a simple Java program. Create a `Hello.java` file with these contents.
 
 Next, run these commands from a shell to compile the program and then start it with remote debugging enabled.
 
-    javac Hello.java
+    javac -g Hello.java
     java -Xdebug -Xrunjdwp:server=y,transport=dt_socket,address=5005,suspend=y Hello
 
 
