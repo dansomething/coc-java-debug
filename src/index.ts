@@ -1,43 +1,44 @@
-import { commands, ExtensionContext, workspace } from 'coc.nvim'
-import { Commands } from './commands'
+import { commands, ExtensionContext, workspace } from 'coc.nvim';
+import { Commands } from './commands';
 
 export async function activate(context: ExtensionContext): Promise<void> {
-  registerCommands(context)
-  return Promise.resolve()
+  registerCommands(context);
+  return Promise.resolve();
 }
 
 function registerCommands(context: ExtensionContext): void {
-  context.subscriptions.push(commands.registerCommand(Commands.JAVA_DEBUG_VIMSPECTOR_START, startVimspector))
+  context.subscriptions.push(commands.registerCommand(Commands.JAVA_DEBUG_VIMSPECTOR_START, startVimspector));
 }
 
-async function startVimspector(): Promise<any> {
-  workspace.showMessage('Starting Java debug server...')
+async function startVimspector(...args): Promise<any> {
+  workspace.showMessage('Starting Java debug server...');
 
   const debugPort: string = await commands.executeCommand(
     Commands.EXECUTE_WORKSPACE_COMMAND,
-    Commands.JAVA_START_DEBUG_SESSION)
+    Commands.JAVA_START_DEBUG_SESSION
+  );
 
-  workspace.showMessage(`Java debug server started on port: ${debugPort}`)
+  workspace.showMessage(`Java debug server started on port: ${debugPort}`);
 
-  const debugConfig = workspace.getConfiguration('java.debug')
-  const profile = debugConfig.get<string>('vimspector.profile')
-  const adapterPort = debugConfig.get<string>('vimspector.substitution.adapterPort')
-  const overrides = getOverrides(arguments)
-  const defaults = {}
+  const debugConfig = workspace.getConfiguration('java.debug');
+  const profile = debugConfig.get<string>('vimspector.profile');
+  const adapterPort = debugConfig.get<string>('vimspector.substitution.adapterPort');
+  const overrides = getOverrides(args);
+  const defaults = {};
   if (profile) {
-    defaults['configuration'] = profile
+    defaults['configuration'] = profile;
   }
   const settings = {
-    [adapterPort]: debugPort,
+    [adapterPort as string]: debugPort,
     ...defaults,
-    ...overrides
-  }
+    ...overrides,
+  };
 
-  const vimspectorSettings = JSON.stringify(settings)
+  const vimspectorSettings = JSON.stringify(settings);
 
   // See https://github.com/puremourning/vimspector#launch-with-options
-  workspace.showMessage(`Launching Vimspector with settings: ${vimspectorSettings}`)
-  return workspace.nvim.eval(`vimspector#LaunchWithSettings(${vimspectorSettings})`)
+  workspace.showMessage(`Launching Vimspector with settings: ${vimspectorSettings}`);
+  return workspace.nvim.eval(`vimspector#LaunchWithSettings(${vimspectorSettings})`);
 }
 
 /**
@@ -47,28 +48,28 @@ async function startVimspector(): Promise<any> {
  * This also handles the possibily of the command args being split by spaces
  * before being passed to the callback.
  */
-function getOverrides(rawArguments: IArguments): object {
-  let args = ''
+function getOverrides(rawArguments: any[]): any {
+  let args = '';
   if (rawArguments.length == 0) {
-    args = rawArguments[0]
+    args = rawArguments[0];
   } else if (rawArguments.length >= 1) {
-    const a = []
+    const a: any[] = [];
     for (const v of rawArguments) {
-      a.push(v)
+      a.push(v);
     }
-    args = a.join(' ')
+    args = a.join(' ');
   }
-  return parseOverrides(args)
+  return parseOverrides(args);
 }
 
-function parseOverrides(args: string): object {
-  let overrides = {}
+function parseOverrides(args: string): any {
+  let overrides = {};
   if (args) {
     try {
-      overrides = JSON.parse(args)
+      overrides = JSON.parse(args);
     } catch (e) {
-      workspace.showMessage(`Expected valid JSON for Vimspector settings, but got: ${args}`, 'error')
+      workspace.showMessage(`Expected valid JSON for Vimspector settings, but got: ${args}`, 'error');
     }
   }
-  return overrides
+  return overrides;
 }
