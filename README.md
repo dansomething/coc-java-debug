@@ -7,8 +7,6 @@ An [extension for coc.nvim](https://github.com/neoclide/coc.nvim/wiki/Using-coc-
 
 *This began as an experiment, but generally "works for me". Your mileage may vary.*
 
-*Also, Java is [partially supported](https://github.com/puremourning/vimspector#java---partially-supported) in Vimspector.*
-
 ### Prerequisites
 
 Be sure to have the [coc-java](https://github.com/neoclide/coc-java#quick-start) extension installed.
