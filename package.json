@@ -67,7 +67,7 @@
       }
     ],
     "javaExtensions": [
-      "./server/com.microsoft.java.debug.plugin-0.29.0.jar"
+      "./server/com.microsoft.java.debug.plugin-0.30.0.jar"
     ],
     "configuration": {
       "type": "object",
