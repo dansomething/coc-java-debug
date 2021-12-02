@@ -31,7 +31,7 @@ A clear and concise description of what you expected to happen.
 **Relevant logs and error messages**
 * View the trace logging output for the Java language server:
     * Set `{ "java.trace.server": "verbose" }` in `:CocSettings`.
-    * Run the command `:CocCommand workspace.showOutput`.
+    * Run the command `:CocCommand workspace.showOutput java`.
     * Are there any errors?
 * View the Vimspector log `:VimspectorShowOutput Vimspector`.
     * Are the any errors?
