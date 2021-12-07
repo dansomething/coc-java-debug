@@ -1,4 +1,4 @@
-import { commands, ExtensionContext, workspace } from 'coc.nvim';
+import { commands, ExtensionContext, workspace, window } from 'coc.nvim';
 import { Commands } from './commands';
 
 export async function activate(context: ExtensionContext): Promise<void> {
@@ -10,15 +10,15 @@ function registerCommands(context: ExtensionContext): void {
   context.subscriptions.push(commands.registerCommand(Commands.JAVA_DEBUG_VIMSPECTOR_START, startVimspector));
 }
 
-async function startVimspector(...args): Promise<any> {
-  workspace.showMessage('Starting Java debug server...');
+async function startVimspector(...args: any[]): Promise<any> {
+  window.showMessage('Starting Java debug server...');
 
   const debugPort: string = await commands.executeCommand(
     Commands.EXECUTE_WORKSPACE_COMMAND,
     Commands.JAVA_START_DEBUG_SESSION
   );
 
-  workspace.showMessage(`Java debug server started on port: ${debugPort}`);
+  window.showMessage(`Java debug server started on port: ${debugPort}`);
 
   const debugConfig = workspace.getConfiguration('java.debug');
   const profile = debugConfig.get<string>('vimspector.profile');
@@ -37,7 +37,7 @@ async function startVimspector(...args): Promise<any> {
   const vimspectorSettings = JSON.stringify(settings);
 
   // See https://github.com/puremourning/vimspector#launch-with-options
-  workspace.showMessage(`Launching Vimspector with settings: ${vimspectorSettings}`);
+  window.showMessage(`Launching Vimspector with settings: ${vimspectorSettings}`);
   return workspace.nvim.eval(`vimspector#LaunchWithSettings(${vimspectorSettings})`);
 }
 
@@ -68,7 +68,7 @@ function parseOverrides(args: string): any {
     try {
       overrides = JSON.parse(args);
     } catch (e) {
-      workspace.showMessage(`Expected valid JSON for Vimspector settings, but got: ${args}`, 'error');
+      window.showMessage(`Expected valid JSON for Vimspector settings, but got: ${args}`, 'error');
     }
   }
   return overrides;
