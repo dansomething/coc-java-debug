@@ -32,7 +32,7 @@
     "clean": "rimraf lib",
     "lint": "eslint src --ext ts",
     "prepare": "npm-run-all clean build",
-    "release": "np",
+    "release": "np --no-tests",
     "watch": "webpack --watch"
   },
   "prettier": {
