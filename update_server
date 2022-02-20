@@ -1,0 +1,19 @@
+#!/usr/bin/env bash
+set -eou pipefail
+
+npx gulp build_server
+jars=$(find server -type f -name 'com.microsoft.java.debug.plugin-*.jar')
+jar_count=$(echo "${jars}" | wc -l)
+if [[ "${jar_count}" -lt 2 ]]; then
+  echo -e "\nThere was no server update. package.json remains the same."
+  exit 0
+fi
+
+old_jar=$(echo "${jars}" | head -1)
+rm "${old_jar}"
+new_jar=$(find server -type f -name 'com.microsoft.java.debug.plugin-*.jar' | tail -1)
+escaped_new_jar=$(printf '%s\n' "${new_jar}" | sed -e 's/[\/&]/\\&/g')
+gsed -i \
+  -e "s/server\/com\.microsoft\.java\.debug\.plugin-[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.jar/${escaped_new_jar}/g" \
+  package.json
+echo -e "\npackage.json updated to [${new_jar}]"
