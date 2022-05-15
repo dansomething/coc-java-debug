@@ -2,7 +2,7 @@
 set -eou pipefail
 
 npx gulp build_server
-jars=$(find server -type f -name 'com.microsoft.java.debug.plugin-*.jar')
+jars=$(find server -type f -name 'com.microsoft.java.debug.plugin-*.jar' | sort)
 jar_count=$(echo "${jars}" | wc -l)
 if [[ "${jar_count}" -lt 2 ]]; then
   echo -e "\nThere was no server update. package.json remains the same."
@@ -17,3 +17,4 @@ gsed -i \
   -e "s/server\/com\.microsoft\.java\.debug\.plugin-[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.jar/${escaped_new_jar}/g" \
   package.json
 echo -e "\npackage.json updated to [${new_jar}]"
+git add -f server/ package.json
