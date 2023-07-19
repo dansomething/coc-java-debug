@@ -15,7 +15,7 @@ async function startVimspector(...args: any[]): Promise<any> {
 
   const debugPort: string = await commands.executeCommand(
     Commands.EXECUTE_WORKSPACE_COMMAND,
-    Commands.JAVA_START_DEBUG_SESSION
+    Commands.JAVA_START_DEBUG_SESSION,
   );
 
   window.showMessage(`Java debug server started on port: ${debugPort}`);
