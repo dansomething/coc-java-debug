@@ -1,8 +1,19 @@
 #!/usr/bin/env bash
 set -eou pipefail
 
-npx gulp build_server
-jars=$(find server -type f -name 'com.microsoft.java.debug.plugin-*.jar' | sort)
+# Assumes git@github.com:microsoft/java-debug.git is checked out to a sibling directory.
+server_dir="server"
+java_debug_dir="../java-debug"
+jar_path="${java_debug_dir}/com.microsoft.java.debug.plugin/target"
+jar_file="com.microsoft.java.debug.*.jar"
+
+pushd "${java_debug_dir}" &>/dev/null || exit 1
+git pull
+./mvnw clean package
+popd &>/dev/null || exit 1
+find "${jar_path}" -maxdepth 1 -type f -name "${jar_file}" -exec cp -vf '{}' "${server_dir}" \;
+
+jars=$(find "${server_dir}" -type f -name "${jar_file}" | sort)
 jar_count=$(echo "${jars}" | wc -l)
 if [[ "${jar_count}" -lt 2 ]]; then
   echo -e "\nThere was no server update. package.json remains the same."
@@ -11,10 +22,10 @@ fi
 
 old_jar=$(echo "${jars}" | head -1)
 rm "${old_jar}"
-new_jar=$(find server -type f -name 'com.microsoft.java.debug.plugin-*.jar' | tail -1)
+new_jar=$(find "${server_dir}" -type f -name "${jar_file}" | tail -1)
 escaped_new_jar=$(printf '%s\n' "${new_jar}" | sed -e 's/[\/&]/\\&/g')
-gsed -i \
-  -e "s/server\/com\.microsoft\.java\.debug\.plugin-[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.jar/${escaped_new_jar}/g" \
+sed -i "" \
+  -e "s/${server_dir}\/com\.microsoft\.java\.debug\.plugin-[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.[[:digit:]]\{1,2\}\.jar/${escaped_new_jar}/g" \
   package.json
 echo -e "\npackage.json updated to [${new_jar}]"
-git add -f server/ package.json
+git add -f "${server_dir}" package.json
