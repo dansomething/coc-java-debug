@@ -30,17 +30,16 @@ async function startVimspector(...args: any[]): Promise<any> {
   window.showInformationMessage(msg);
 
   const mainMethod = await resolveMainMethodCurrentFile();
-  if (!mainMethod) {
-    window.showErrorMessage(`A Java file must be active for :CocCommand ${Commands.JAVA_DEBUG_VIMSPECTOR_START}`);
-    return Promise.resolve();
+  const mainClass = mainMethod?.mainClass;
+  const projectName = mainMethod?.projectName;
+  let modulePaths: string | undefined = undefined;
+  let classPaths: string | undefined = undefined;
+  if (mainMethod) {
+    const classPathMainMethod = await resolveClassPathMainMethod(mainMethod);
+    // See https://puremourning.github.io/vimspector/configuration.html#the-splat-operator
+    modulePaths = classPathMainMethod?.modulePaths.join(' ');
+    classPaths = classPathMainMethod?.classPaths.join(' ');
   }
-  const mainClass = mainMethod.mainClass;
-  const projectName = mainMethod.projectName;
-  const classPathMainMethod = await resolveClassPathMainMethod(mainMethod);
-
-  // See https://puremourning.github.io/vimspector/configuration.html#the-splat-operator
-  const modulePaths = classPathMainMethod.modulePaths.join(' ');
-  const classPaths = classPathMainMethod.classPaths.join(' ');
 
   const debugConfig = workspace.getConfiguration('java.debug');
   // See package.json#configuration.properties
