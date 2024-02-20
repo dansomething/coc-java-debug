@@ -1,5 +1,12 @@
-import { commands, ExtensionContext, workspace, window } from 'coc.nvim';
-import { Commands } from './commands';
+import { ExtensionContext, commands, window, workspace } from 'coc.nvim';
+import { Commands, executeCommand } from './commands';
+import {
+  resolveClassPathCurrentFile,
+  resolveClassPathMainMethod,
+  resolveMainMethodCurrentFile,
+  resolveMainMethodsCurrentFile,
+} from './debugserver';
+import { ISubstitutionVar } from './protocol';
 
 export async function activate(context: ExtensionContext): Promise<void> {
   registerCommands(context);
@@ -8,36 +15,60 @@ export async function activate(context: ExtensionContext): Promise<void> {
 
 function registerCommands(context: ExtensionContext): void {
   context.subscriptions.push(commands.registerCommand(Commands.JAVA_DEBUG_VIMSPECTOR_START, startVimspector));
+  context.subscriptions.push(
+    commands.registerCommand(Commands.JAVA_DEBUG_RESOLVE_MAINMETHOD, showCommandResult(resolveMainMethodsCurrentFile)),
+  );
+  context.subscriptions.push(
+    commands.registerCommand(Commands.JAVA_DEBUG_RESOLVE_CLASSPATH, showCommandResult(resolveClassPathCurrentFile)),
+  );
 }
 
 async function startVimspector(...args: any[]): Promise<any> {
-  window.showMessage('Starting Java debug server...');
+  const debugPort: string = await executeCommand(Commands.JAVA_START_DEBUGSESSION);
+  const msg = `Java debug server started on port: ${debugPort}`;
+  console.info(msg);
+  window.showInformationMessage(msg);
 
-  const debugPort: string = await commands.executeCommand(
-    Commands.EXECUTE_WORKSPACE_COMMAND,
-    Commands.JAVA_START_DEBUG_SESSION,
-  );
+  const mainMethod = await resolveMainMethodCurrentFile();
+  if (!mainMethod) {
+    window.showErrorMessage(`A Java file must be active for :CocCommand ${Commands.JAVA_DEBUG_VIMSPECTOR_START}`);
+    return Promise.resolve();
+  }
+  const mainClass = mainMethod.mainClass;
+  const projectName = mainMethod.projectName;
+  const classPathMainMethod = await resolveClassPathMainMethod(mainMethod);
 
-  window.showMessage(`Java debug server started on port: ${debugPort}`);
+  // See https://puremourning.github.io/vimspector/configuration.html#the-splat-operator
+  const modulePaths = classPathMainMethod.modulePaths.join(' ');
+  const classPaths = classPathMainMethod.classPaths.join(' ');
 
   const debugConfig = workspace.getConfiguration('java.debug');
+  // See package.json#configuration.properties
+  const vars = debugConfig.get<ISubstitutionVar>('vimspector.substitution');
+
+  // DEPRECATED Vimspector supports choosing a default now.
   const profile = debugConfig.get<string>('vimspector.profile');
-  const adapterPort = debugConfig.get<string>('vimspector.substitution.adapterPort');
-  const overrides = getOverrides(args);
   const defaults = {};
   if (profile) {
     defaults['configuration'] = profile;
   }
+
+  const overrides = getOverrides(args);
+
   const settings = {
-    [adapterPort as string]: debugPort,
+    [vars?.adapterPort as string]: debugPort,
+    [vars?.classPaths as string]: classPaths,
+    [vars?.mainClass as string]: mainClass,
+    [vars?.modulePaths as string]: modulePaths,
+    [vars?.projectName as string]: projectName,
     ...defaults,
     ...overrides,
   };
 
   const vimspectorSettings = JSON.stringify(settings);
-
   // See https://github.com/puremourning/vimspector#launch-with-options
-  window.showMessage(`Launching Vimspector with settings: ${vimspectorSettings}`);
+  // View logs with :CocOpenLog
+  console.info(`Launching Vimspector with settings: ${vimspectorSettings}`);
   return workspace.nvim.eval(`vimspector#LaunchWithSettings(${vimspectorSettings})`);
 }
 
@@ -68,8 +99,17 @@ function parseOverrides(args: string): any {
     try {
       overrides = JSON.parse(args);
     } catch (e) {
-      window.showMessage(`Expected valid JSON for Vimspector settings, but got: ${args}`, 'error');
+      window.showErrorMessage(`Expected valid JSON for Vimspector settings, but got: ${args}`, 'error');
     }
   }
   return overrides;
+}
+
+function showCommandResult(func: () => Promise<any>): (...args: any[]) => Promise<void> {
+  return async () => {
+    const result = await func();
+    const json = JSON.stringify(result, null, 2);
+    window.showInformationMessage(json);
+    return Promise.resolve();
+  };
 }

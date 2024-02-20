@@ -87,6 +87,30 @@
           "default": "AdapterPort",
           "description": "Specifies the Vimspector adapter port substitution name in `.vimspector.json`. The actual port number will replace this value in the Vimspector config when the debug server is started.",
           "scope": "window"
+        },
+        "java.debug.vimspector.substitution.classPaths": {
+          "type": "string",
+          "default": "ClassPaths",
+          "description": "Specifies the Vimspector class paths substitution name in `.vimspector.json`. The actual class paths will replace this value in the Vimspector config when the debug server is started.",
+          "scope": "window"
+        },
+        "java.debug.vimspector.substitution.mainClass": {
+          "type": "string",
+          "default": "MainClass",
+          "description": "Specifies the Vimspector main class substitution name in `.vimspector.json`. The actual main class will replace this value in the Vimspector config when the debug server is started.",
+          "scope": "window"
+        },
+        "java.debug.vimspector.substitution.modulePaths": {
+          "type": "string",
+          "default": "ModulePaths",
+          "description": "Specifies the Vimspector module paths substitution name in `.vimspector.json`. The actual module paths will replace this value in the Vimspector config when the debug server is started.",
+          "scope": "window"
+        },
+        "java.debug.vimspector.substitution.projectName": {
+          "type": "string",
+          "default": "ProjectName",
+          "description": "Specifies the Vimspector project name substitution name in `.vimspector.json`. The actual project name will replace this value in the Vimspector config when the debug server is started.",
+          "scope": "window"
         }
       }
     },
@@ -94,6 +118,16 @@
       {
         "command": "java.debug.vimspector.start",
         "title": "Launch Vimspector and connect it to the Java Debug Server.",
+        "category": "Java"
+      },
+      {
+        "command": "java.debug.resolveMainMethod",
+        "title": "Show resolved main methods.",
+        "category": "Java"
+      },
+      {
+        "command": "java.debug.resolveClasspath",
+        "title": "Show resolved class paths.",
         "category": "Java"
       }
     ]
