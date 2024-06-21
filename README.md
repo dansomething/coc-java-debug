@@ -36,6 +36,7 @@ You will also need to [install the Vimspector][5] plugin for Vim.
 The following CocCommand options are provided:
 
 - `java.debug.vimspector.start`: Launch Vimspector and connect it to the [Java Debug Server][1].
+- `java.debug.settings.update`: Sync local debug settings to [Java Debug Server][1]. Done automatically when Vimspector is started with `java.debug.vimspector.start` command.
 
 ### Command Arguments
 
@@ -55,6 +56,36 @@ The following settings are supported in [CocConfig][9]:
 
 - `java.debug.vimspector.profile` : **(Deprecated)** Set to `null` and use `"default":true` in Vimspector.json instead. Specifies the Vimspector [profile][10] to activate when launching. Set to `null` to be prompted if multiple configurations are found and no default is set. Defaults to `Java Attach`
 - `java.debug.vimspector.substitution.adapterPort` : Specifies the Vimspector [adapter port][11] substitution name in `.vimspector.json`. The actual port number will replace this value in the Vimspector config when the debug server is started. Defaults to `AdapterPort`
+- `java.debug.settings.showHex`: show numbers in hex format in "Variables" viewlet, defaults to `false`.
+- `java.debug.settings.showStaticVariables`: show static variables in "Variables" viewlet, defaults to `false`.
+- `java.debug.settings.showQualifiedNames`: show fully qualified class names in "Variables" viewlet, defaults to `false`.
+- `java.debug.settings.showLogicalStructure`: show the logical structure for the Collection and Map classes in "Variables" viewlet, defaults to `true`.
+- `java.debug.settings.showToString`: show 'toString()' value for all classes that override 'toString' method in "Variables" viewlet, defaults to `true`.
+- `java.debug.settings.maxStringLength`: the maximum length of string displayed in "Variables" viewlet, the string longer than this length will be trimmed, defaults to `0` which means no trim is performed.
+- `java.debug.settings.numericPrecision`: the precision when formatting doubles in "Variables" viewlet.
+- `java.debug.settings.hotCodeReplace`: Reload the changed Java classes during debugging, defaults to `manual`.
+- `java.debug.settings.exceptionBreakpoint.exceptionTypes`: Specifies a set of exception types you want to break on, e.g. `java.lang.NullPointerException`. A specific exception type and its subclasses can be selected for caught exceptions, uncaught exceptions, or both can be selected.
+- `java.debug.settings.exceptionBreakpoint.allowClasses`: Specifies the allowed locations where the exception breakpoint can break on. Wildcard is supported, e.g. `java.*`, `*.Foo`.
+- `java.debug.settings.exceptionBreakpoint.skipClasses`: Skip the specified classes when breaking on exception.
+  - `$JDK` - Skip the JDK classes from the default system bootstrap classpath, such as rt.jar, jrt-fs.jar.
+  - `$Libraries` - Skip the classes from application libraries, such as Maven, Gradle dependencies.
+  - `java.*` - Skip the specified classes. Wildcard is supported.
+  - `java.lang.ClassLoader` - Skip the classloaders.
+- `java.debug.settings.stepping.skipClasses`: Skip the specified classes when stepping.
+  - `$JDK` - Skip the JDK classes from the default system bootstrap classpath, such as rt.jar, jrt-fs.jar.
+  - `$Libraries` - Skip the classes from application libraries, such as Maven, Gradle dependencies.
+  - `java.*` - Skip the specified classes. Wildcard is supported.
+  - `java.lang.ClassLoader` - Skip the classloaders.
+- `java.debug.settings.stepping.skipSynthetics`: Skip synthetic methods when stepping.
+- `java.debug.settings.stepping.skipStaticInitializers`: Skip static initializer methods when stepping.
+- `java.debug.settings.stepping.skipConstructors`: Skip constructor methods when stepping.
+- `java.debug.settings.jdwp.limitOfVariablesPerJdwpRequest`: The maximum number of variables or fields that can be requested in one JDWP request. The higher the value, the less frequently debuggee will be requested when expanding the variable view. Also a large number can cause JDWP request timeout. Defaults to 100.
+- `java.debug.settings.jdwp.requestTimeout`: The timeout (ms) of JDWP request when the debugger communicates with the target JVM. Defaults to 3000.
+- `java.debug.settings.jdwp.async`: Experimental: Controls whether the debugger is allowed to send JDWP commands asynchronously. Async mode can improve remote debugging response speed on high-latency networks. Defaults to `auto`, and automatically switch to async mode when the latency of a single jdwp request exceeds 15ms during attach debugging.
+  - `auto` (Default)
+  - `on`
+  - `off`
+- `java.debug.settings.debugSupportOnDecompiledSource`: [Experimental]: Enable debugging support on the decompiled source code. Be aware that this feature may affect the loading speed of Call Stack Viewlet. You also need [Language Support for Java by Red Hat](https://marketplace.visualstudio.com/items?itemName=redhat.java)@1.20.0 or higher to use this feature.
 
 ## Usage and Setup
 

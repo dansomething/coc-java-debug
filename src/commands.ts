@@ -7,7 +7,13 @@ export namespace Commands {
 
   export const JAVA_RESOLVE_MAINMETHOD = 'vscode.java.resolveMainMethod';
 
+  export const JAVA_RESOLVE_CLASSFILTERS = 'vscode.java.resolveClassFilters';
+
+  export const JAVA_UPDATE_DEBUG_SETTINGS = "vscode.java.updateDebugSettings";
+
   export const JAVA_DEBUG_VIMSPECTOR_START = 'java.debug.vimspector.start';
+
+  export const JAVA_DEBUG_SETTINGS_UPDATE = 'java.debug.settings.update';
 
   export const JAVA_DEBUG_RESOLVE_MAINMETHOD = 'java.debug.resolveMainMethod';
 

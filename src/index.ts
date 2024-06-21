@@ -7,14 +7,18 @@ import {
   resolveMainMethodsCurrentFile,
 } from './debugserver';
 import { ISubstitutionVar } from './protocol';
+import { substituteFilterVariables } from './classFilter';
+import {onConfigurationChange, updateDebugSettings} from './settings';
 
 export async function activate(context: ExtensionContext): Promise<void> {
   registerCommands(context);
+  context.subscriptions.push(onConfigurationChange())
   return Promise.resolve();
 }
 
 function registerCommands(context: ExtensionContext): void {
   context.subscriptions.push(commands.registerCommand(Commands.JAVA_DEBUG_VIMSPECTOR_START, startVimspector));
+  context.subscriptions.push(commands.registerCommand(Commands.JAVA_DEBUG_SETTINGS_UPDATE, updateDebugSettings));
   context.subscriptions.push(
     commands.registerCommand(Commands.JAVA_DEBUG_RESOLVE_MAINMETHOD, showCommandResult(resolveMainMethodsCurrentFile)),
   );
@@ -28,6 +32,8 @@ async function startVimspector(...args: any[]): Promise<any> {
   const msg = `Java debug server started on port: ${debugPort}`;
   console.info(msg);
   window.showInformationMessage(msg);
+
+  updateDebugSettings()
 
   const mainMethod = await resolveMainMethodCurrentFile();
   const mainClass = mainMethod?.mainClass;
