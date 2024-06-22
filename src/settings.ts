@@ -71,7 +71,7 @@ export async function updateDebugSettings() {
                 }));
             if (logLevel === "FINE") {
                 // tslint:disable-next-line:no-console
-                console.log("settings:", settings);
+                console.debug("settings:", settings);
             }
         } catch (err) {
             // log a warning message and continue, since update settings failure should not block debug session
