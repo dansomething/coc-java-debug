@@ -76,7 +76,7 @@ export async function updateDebugSettings() {
         } catch (err) {
             // log a warning message and continue, since update settings failure should not block debug session
             // tslint:disable-next-line:no-console
-            console.log("Cannot update debug settings.", err);
+            console.error("Cannot update debug settings.", err);
         }
     }
 }
