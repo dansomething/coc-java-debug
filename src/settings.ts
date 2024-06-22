@@ -70,7 +70,6 @@ export async function updateDebugSettings() {
                     logLevel,
                 }));
             if (logLevel === "FINE") {
-                // tslint:disable-next-line:no-console
                 console.debug("settings:", settings);
             }
         } catch (err) {
