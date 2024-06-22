@@ -112,6 +112,18 @@
           "description": "Specifies the Vimspector project name substitution name in `.vimspector.json`. The actual project name will replace this value in the Vimspector config when the debug server is started.",
           "scope": "window"
         },
+        "java.debug.logLevel": {
+          "type": "string",
+          "default": "warn",
+          "description": "minimum level of debugger logs that are sent to language server",
+          "enum": [
+            "error",
+            "warn",
+            "info",
+            "verbose"
+          ],
+          "scope": "window"
+        },
         "java.debug.settings.showHex": {
           "type": "boolean",
           "default": false,
