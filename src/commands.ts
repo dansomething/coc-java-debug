@@ -9,7 +9,7 @@ export namespace Commands {
 
   export const JAVA_RESOLVE_CLASSFILTERS = 'vscode.java.resolveClassFilters';
 
-  export const JAVA_UPDATE_DEBUG_SETTINGS = "vscode.java.updateDebugSettings";
+  export const JAVA_UPDATE_DEBUG_SETTINGS = 'vscode.java.updateDebugSettings';
 
   export const JAVA_DEBUG_VIMSPECTOR_START = 'java.debug.vimspector.start';
 

@@ -7,12 +7,11 @@ import {
   resolveMainMethodsCurrentFile,
 } from './debugserver';
 import { ISubstitutionVar } from './protocol';
-import { substituteFilterVariables } from './classFilter';
-import {onConfigurationChange, updateDebugSettings} from './settings';
+import { onConfigurationChange, updateDebugSettings } from './settings';
 
 export async function activate(context: ExtensionContext): Promise<void> {
   registerCommands(context);
-  context.subscriptions.push(onConfigurationChange())
+  context.subscriptions.push(onConfigurationChange());
   return Promise.resolve();
 }
 
@@ -33,7 +32,7 @@ async function startVimspector(...args: any[]): Promise<any> {
   console.info(msg);
   window.showInformationMessage(msg);
 
-  updateDebugSettings()
+  updateDebugSettings();
 
   const mainMethod = await resolveMainMethodCurrentFile();
   const mainClass = mainMethod?.mainClass;
