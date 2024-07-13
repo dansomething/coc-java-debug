@@ -111,6 +111,186 @@
           "default": "ProjectName",
           "description": "Specifies the Vimspector project name substitution name in `.vimspector.json`. The actual project name will replace this value in the Vimspector config when the debug server is started.",
           "scope": "window"
+        },
+        "java.debug.logLevel": {
+          "type": "string",
+          "default": "warn",
+          "description": "minimum level of debugger logs that are sent to language server",
+          "enum": [
+            "error",
+            "warn",
+            "info",
+            "verbose"
+          ],
+          "scope": "window"
+        },
+        "java.debug.settings.showHex": {
+          "type": "boolean",
+          "default": false,
+          "description": "show numbers in hex format in `Variables` viewlet",
+          "scope": "window"
+        },
+        "java.debug.settings.showStaticVariables": {
+          "type": "boolean",
+          "default": false,
+          "description": "Show static variables in `Variables` viewlet",
+          "scope": "window"
+        },
+        "java.debug.settings.showQualifiedNames": {
+          "type": "boolean",
+          "default": false,
+          "description": "show fully qualified class names in `Variables` viewlet",
+          "scope": "window"
+        },
+        "java.debug.settings.showLogicalStructure": {
+          "type": "boolean",
+          "default": true,
+          "description": "show the logical structure for the Collection and Map classes in `Variables` viewlet",
+          "scope": "window"
+        },
+        "java.debug.settings.showToString": {
+          "type": "boolean",
+          "default": true,
+          "description": "show 'toString()' value for all classes that override 'toString' method in `Variables` viewlet",
+          "scope": "window"
+        },
+        "java.debug.settings.maxStringLength": {
+          "type": "number",
+          "default": 0,
+          "description": "the maximum length of string displayed in `Variables` viewlet, the string longer than this length will be trimmed, defaults to 0 which means no trim is performed",
+          "scope": "window"
+        },
+        "java.debug.settings.numericPrecision": {
+          "type": "number",
+          "default": 0,
+          "description": "the precision when formatting doubles in `Variables` viewlet",
+          "scope": "window"
+        },
+        "java.debug.settings.hotCodeReplace": {
+          "type": "string",
+          "default": "manual",
+          "description": "Reload the changed Java classes during debugging",
+          "enum": [
+            "auto",
+            "manual",
+            "never"
+          ],
+          "scope": "window"
+        },
+        "java.debug.settings.exceptionBreakpoint.exceptionTypes": {
+          "type": "array",
+          "default": [],
+          "description": "Specifies a set of exception types you want to break on",
+          "scope": "window"
+        },
+        "java.debug.settings.exceptionBreakpoint.allowClasses": {
+          "type": "array",
+          "default": [],
+          "description": "Specifies the allowed locations where the exception breakpoint can break on. Wildcard is supported, e.g. java.*, *.Foo",
+          "scope": "window"
+        },
+        "java.debug.settings.exceptionBreakpoint.skipClasses": {
+          "type": "array",
+          "default": [],
+          "description": "Skip the specified classes when breaking on exception",
+          "items": {
+            "anyOf": [
+              {
+                "enum": [
+                  "$JDK",
+                  "$Libraries",
+                  "java.lang.ClassLoader",
+                  ""
+                ],
+                "enumDescriptions": [
+                  "Skip the JDK classes from the default system bootstrap classpath, such as rt.jar, jrt-fs.jar",
+                  "Skip the classes from application libraries, such as Maven, Gradle dependencies",
+                  "Skip the classloaders",
+                  "Skip the specified classes. Wildcard is supported"
+                ]
+              },
+              "string"
+            ]
+          },
+          "scope": "window"
+        },
+        "java.debug.settings.stepping.skipClasses": {
+          "type": "array",
+          "default": [],
+          "description": "Skip the specified classes when stepping",
+          "items": {
+            "anyOf": [
+              {
+                "enum": [
+                  "$JDK",
+                  "$Libraries",
+                  "java.lang.ClassLoader",
+                  ""
+                ],
+                "enumDescriptions": [
+                  "Skip the JDK classes from the default system bootstrap classpath, such as rt.jar, jrt-fs.jar",
+                  "Skip the classes from application libraries, such as Maven, Gradle dependencies",
+                  "Skip the classloaders",
+                  "Skip the specified classes. Wildcard is supported"
+                ]
+              },
+              "string"
+            ]
+          },
+          "scope": "window"
+        },
+        "java.debug.settings.stepping.skipSynthetics": {
+          "type": "boolean",
+          "default": false,
+          "description": "Skip synthetic methods when stepping",
+          "scope": "window"
+        },
+        "java.debug.settings.stepping.skipStaticInitializers": {
+          "type": "boolean",
+          "default": false,
+          "description": "Skip static initializer methods when stepping",
+          "scope": "window"
+        },
+        "java.debug.settings.stepping.skipConstructors": {
+          "type": "boolean",
+          "default": false,
+          "description": "Skip constructor methods when stepping",
+          "scope": "window"
+        },
+        "java.debug.settings.jdwp.limitOfVariablesPerJdwpRequest": {
+          "type": "number",
+          "default": 100,
+          "minimum": 1,
+          "description": "The maximum number of variables or fields that can be requested in one JDWP request",
+          "scope": "window"
+        },
+        "java.debug.settings.jdwp.requestTimeout": {
+          "type": "number",
+          "default": 3000,
+          "minimum": 100,
+          "description": "The timeout (ms) of JDWP request when the debugger communicates with the target JVM",
+          "scope": "window"
+        },
+        "java.debug.settings.jdwp.async": {
+          "type": "string",
+          "default": "off",
+          "description": "Experimental: Controls whether the debugger is allowed to send JDWP commands asynchronously",
+          "enum": [
+            "auto",
+            "on",
+            "off"
+          ],
+          "scope": "window"
+        },
+        "java.debug.settings.debugSupportOnDecompiledSource": {
+          "type": "string",
+          "default": "off",
+          "description": "Experimental: Enable debugging support on the decompiled source code",
+          "enum": [
+            "on",
+            "off"
+          ],
+          "scope": "window"
         }
       }
     },
@@ -118,6 +298,11 @@
       {
         "command": "java.debug.vimspector.start",
         "title": "Launch Vimspector and connect it to the Java Debug Server.",
+        "category": "Java"
+      },
+      {
+        "command": "java.debug.settings.update",
+        "title": "Update debug settings.",
         "category": "Java"
       },
       {
