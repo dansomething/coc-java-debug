@@ -73,15 +73,6 @@
       "type": "object",
       "title": "Java Debug Configuration",
       "properties": {
-        "java.debug.vimspector.profile": {
-          "type": [
-            "string",
-            "null"
-          ],
-          "default": "Java Attach",
-          "description": "(Deprecated) Use `\"default\":true` in Vimspector.json instead.\n\nSpecifies the Vimspector profile to activate when launching.\nSet to `null` to be prompted if multiple configurations are found and no default is set.\n\nSee also:\nhttps://puremourning.github.io/vimspector/configuration.html#configuration-selection",
-          "scope": "window"
-        },
         "java.debug.vimspector.substitution.adapterPort": {
           "type": "string",
           "default": "AdapterPort",

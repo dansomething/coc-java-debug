@@ -41,6 +41,7 @@ async function startVimspector(...args: any[]): Promise<any> {
   let classPaths: string | undefined = undefined;
   if (mainMethod) {
     const classPathMainMethod = await resolveClassPathMainMethod(mainMethod);
+    // Join path parts together to support using them with the Vimspector splat operator.
     // See https://puremourning.github.io/vimspector/configuration.html#the-splat-operator
     modulePaths = classPathMainMethod?.modulePaths.join(' ');
     classPaths = classPathMainMethod?.classPaths.join(' ');
@@ -50,13 +51,6 @@ async function startVimspector(...args: any[]): Promise<any> {
   // See package.json#configuration.properties
   const vars = debugConfig.get<ISubstitutionVar>('vimspector.substitution');
 
-  // DEPRECATED Vimspector supports choosing a default now.
-  const profile = debugConfig.get<string>('vimspector.profile');
-  const defaults = {};
-  if (profile) {
-    defaults['configuration'] = profile;
-  }
-
   const overrides = getOverrides(args);
 
   const settings = {
@@ -65,7 +59,6 @@ async function startVimspector(...args: any[]): Promise<any> {
     [vars?.mainClass as string]: mainClass,
     [vars?.modulePaths as string]: modulePaths,
     [vars?.projectName as string]: projectName,
-    ...defaults,
     ...overrides,
   };
 

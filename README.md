@@ -54,7 +54,6 @@ These settings will take precedence when launching Vimspector.
 
 The following settings are supported in [CocConfig][9]:
 
-- `java.debug.vimspector.profile` : **(Deprecated)** Set to `null` and use `"default":true` in Vimspector.json instead. Specifies the Vimspector [profile][10] to activate when launching. Set to `null` to be prompted if multiple configurations are found and no default is set. Defaults to `Java Attach`
 - `java.debug.vimspector.substitution.adapterPort` : Specifies the Vimspector [adapter port][11] substitution name in `.vimspector.json`. The actual port number will replace this value in the Vimspector config when the debug server is started. Defaults to `AdapterPort`
 - `java.debug.logLevel`: minimum level of debugger logs that are sent to language server, defaults to `warn`.
 - `java.debug.settings.showHex`: show numbers in hex format in "Variables" viewlet, defaults to `false`.
