@@ -1,0 +1,25 @@
+{
+  "adapters": {
+    "coc-java-debug": {
+      "port": "${AdapterPort}"
+    }
+  },
+  "configurations": {
+    "launch": {
+      "adapter": "coc-java-debug",
+      "configuration": {
+        "args": "${args}",
+        "request": "launch",
+        "projectName": "${ProjectName}",
+        "mainClass": "${MainClass}",
+        "classPaths": ["*${ClassPaths}"]
+      },
+      "breakpoints": {
+        "exception": {
+          "caught": "N",
+          "uncaught": "N"
+        }
+      }
+    }
+  }
+}

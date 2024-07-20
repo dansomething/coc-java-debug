@@ -8,6 +8,11 @@ import {
 } from './debugserver';
 import { ISubstitutionVar } from './protocol';
 import { onConfigurationChange, updateDebugSettings } from './settings';
+import fs from 'fs';
+import vimspectorJson from './resources/vimspector.json';
+import * as path from 'path';
+
+const VIMSPECTOR_CONFIG_FILE = '.vimspector.json';
 
 export async function activate(context: ExtensionContext): Promise<void> {
   registerCommands(context);
@@ -32,6 +37,7 @@ async function startVimspector(...args: any[]): Promise<any> {
   window.showInformationMessage(msg);
 
   updateDebugSettings();
+  initVimspectorConfig();
 
   const mainMethod = await resolveMainMethodCurrentFile();
   const mainClass = mainMethod?.mainClass;
@@ -106,4 +112,25 @@ function showCommandResult(func: () => Promise<any>): (...args: any[]) => Promis
     const json = JSON.stringify(result, null, 2);
     return window.showInformationMessage(json);
   };
+}
+
+function initVimspectorConfig(): void {
+  const config = workspace.getConfiguration('java.debug.vimspector.config');
+  const shouldCreate = config.get<boolean>('createIfNotExists');
+  if (!shouldCreate) {
+    console.debug(`Vimspector default config creation is not enabled. Skipping creation.`);
+    return;
+  }
+
+  const configPath = path.resolve(workspace.root, VIMSPECTOR_CONFIG_FILE);
+  if (fs.existsSync(configPath)) {
+    console.debug(`${VIMSPECTOR_CONFIG_FILE} already exists. Skipping creation.`);
+    return;
+  }
+
+  try {
+    fs.writeFileSync(configPath, JSON.stringify(vimspectorJson, null, 2));
+  } catch (e) {
+    console.error(`Failed to write ${VIMSPECTOR_CONFIG_FILE}`, e);
+  }
 }
