@@ -19,7 +19,7 @@ export async function resolveMainMethodsCurrentFile(): Promise<MainMethodResult>
 
 async function resolveMainMethod(document: TextDocument): Promise<MainMethodResult> {
   const resourcePath = getJavaResourcePath(document);
-  return await executeCommand(Commands.JAVA_RESOLVE_MAINMETHOD, resourcePath);
+  return executeCommand(Commands.JAVA_RESOLVE_MAINMETHOD, resourcePath);
 }
 
 export async function resolveClassPathCurrentFile(): Promise<IClassPath> {

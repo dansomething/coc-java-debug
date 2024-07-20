@@ -12,7 +12,6 @@ import { onConfigurationChange, updateDebugSettings } from './settings';
 export async function activate(context: ExtensionContext): Promise<void> {
   registerCommands(context);
   context.subscriptions.push(onConfigurationChange());
-  return Promise.resolve();
 }
 
 function registerCommands(context: ExtensionContext): void {
@@ -50,7 +49,6 @@ async function startVimspector(...args: any[]): Promise<any> {
   const debugConfig = workspace.getConfiguration('java.debug');
   // See package.json#configuration.properties
   const vars = debugConfig.get<ISubstitutionVar>('vimspector.substitution');
-
   const overrides = getOverrides(args);
 
   const settings = {
@@ -102,11 +100,10 @@ function parseOverrides(args: string): any {
   return overrides;
 }
 
-function showCommandResult(func: () => Promise<any>): (...args: any[]) => Promise<void> {
+function showCommandResult(func: () => Promise<any>): (...args: any[]) => Promise<string | undefined> {
   return async () => {
     const result = await func();
     const json = JSON.stringify(result, null, 2);
-    window.showInformationMessage(json);
-    return Promise.resolve();
+    return window.showInformationMessage(json);
   };
 }
