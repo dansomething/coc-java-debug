@@ -22,6 +22,6 @@ export namespace Commands {
   export const EXECUTE_WORKSPACE_COMMAND = 'java.execute.workspaceCommand';
 }
 
-export async function executeCommand(...rest: any[]) {
-  return commands.executeCommand(Commands.EXECUTE_WORKSPACE_COMMAND, ...rest);
+export async function executeCommand<T>(...rest: any[]): Promise<T> {
+  return commands.executeCommand<T>(Commands.EXECUTE_WORKSPACE_COMMAND, ...rest);
 }

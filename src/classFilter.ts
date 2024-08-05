@@ -1,6 +1,6 @@
 import { Commands, executeCommand } from './commands';
 
-export async function substituteFilterVariables(skipClasses: string[]): Promise<any> {
+export async function substituteFilterVariables(skipClasses: string[]): Promise<string[]> {
   if (!skipClasses) {
     return [];
   }
