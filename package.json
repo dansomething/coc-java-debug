@@ -1,6 +1,6 @@
 {
   "name": "coc-java-debug",
-  "version": "0.4.0",
+  "version": "1.0.0",
   "description": "Java langauage debugging extension for coc.nvim",
   "author": "dansomething",
   "license": "EPL-2.0",
