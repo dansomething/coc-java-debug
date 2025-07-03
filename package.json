@@ -31,8 +31,8 @@
   "scripts": {
     "build": "node esbuild.mjs",
     "clean": "rimraf lib",
-    "fix": "eslint --fix .",
-    "lint": "eslint .",
+    "fix": "eslint --fix && prettier --write .",
+    "lint": "eslint && prettier --check .",
     "prepare": "npm-run-all clean build",
     "release": "np --no-tests",
     "watch": "node esbuild.mjs --watch"

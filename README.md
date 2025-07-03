@@ -213,13 +213,13 @@ Add the following contents to the `.vimspector.json` file in the root directory 
 }
 ```
 
-*Review the [Vimspector config][12] docs for what's possible within this file.*
+_Review the [Vimspector config][12] docs for what's possible within this file._
 
 ##### Configure Vim
 
 This extension provides `:CocCommand java.debug.vimspector.start` to simplify launching Vimspector.
 
-*Note, it does not start your Java process in remote debug mode. An example of how to do that is covered below.*
+_Note, it does not start your Java process in remote debug mode. An example of how to do that is covered below._
 
 To further simplify, launching Vimspector, add the following config to your `~/.vimrc` file or wherever appropriate for
 your Vim setup.
@@ -263,11 +263,11 @@ the breakpoint you set.
 
 That's it! You may now [step debug][20] your way through a Java program from within Vim.
 
-*Note, if you use a Java debug port different than `5005` you will need to change that value in your `.vimspector.json`
+_Note, if you use a Java debug port different than `5005` you will need to change that value in your `.vimspector.json`
 file. It is also possible to configure this port dynamically in Vimspector in the same manner as the debug adapter
-port.*
+port._
 
-*Also note, if you use Maven for builds you may start [remote debugging][14] for tests and then run Vimspector.*
+_Also note, if you use Maven for builds you may start [remote debugging][14] for tests and then run Vimspector._
 
 ```sh
 mvn test -Dmaven.surefire.debug
@@ -278,7 +278,7 @@ mvn test -Dmaven.surefire.debug
 If you'd prefer to launch the Vimspector plugin directly with your own configuration then add something similar the
 following config to your `~/.vimrc` file or wherever appropriate for your Vim setup.
 
-*Note, this will bypass using the `:CocCommand` documented above to start the debug session.*
+_Note, this will bypass using the `:CocCommand` documented above to start the debug session._
 
 ```viml
 function! JavaStartDebugCallback(err, port)
