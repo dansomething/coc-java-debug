@@ -1,4 +1,8 @@
+import fs from 'fs';
 import * as esbuild from 'esbuild';
+
+const loadJSON = (path) => JSON.parse(fs.readFileSync(new URL(path, import.meta.url)));
+const data = loadJSON('package.json');
 
 const options = {
   entryPoints: ['src/index.ts'],
@@ -8,8 +12,8 @@ const options = {
   mainFields: ['module', 'main'],
   external: ['coc.nvim'],
   platform: 'node',
-  target: 'node16',
-  outfile: 'lib/index.js',
+  target: 'node18',
+  outfile: data.main,
   // https://esbuild.github.io/api/#log-level
   logLevel: process.env.NODE_ENV === 'development' ? 'info' : 'error',
 };

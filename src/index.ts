@@ -1,5 +1,5 @@
-import { ExtensionContext, commands, window, workspace } from 'coc.nvim';
-import { Commands, executeCommand } from './commands';
+import { ExtensionContext, VimValue, commands, window, workspace } from 'coc.nvim';
+import * as Commands from './commands';
 import {
   resolveClassPathCurrentFile,
   resolveClassPathMainMethod,
@@ -11,6 +11,7 @@ import { onConfigurationChange, updateDebugSettings } from './settings';
 import fs from 'fs';
 import vimspectorJson from './resources/vimspector.json';
 import * as path from 'path';
+import { getLogger } from './logger';
 
 const VIMSPECTOR_CONFIG_FILE = '.vimspector.json';
 
@@ -30,10 +31,10 @@ function registerCommands(context: ExtensionContext): void {
   );
 }
 
-async function startVimspector(...args: any[]): Promise<any> {
-  const debugPort: string = await executeCommand(Commands.JAVA_START_DEBUGSESSION);
+async function startVimspector(...args: unknown[]): Promise<VimValue> {
+  const debugPort: string = await Commands.executeCommand(Commands.JAVA_START_DEBUGSESSION);
   const msg = `Java debug server started on port: ${debugPort}`;
-  console.info(msg);
+  getLogger().info(msg);
   window.showInformationMessage(msg);
 
   updateDebugSettings();
@@ -69,7 +70,7 @@ async function startVimspector(...args: any[]): Promise<any> {
   const vimspectorSettings = JSON.stringify(settings);
   // See https://github.com/puremourning/vimspector#launch-with-options
   // View logs with :CocOpenLog
-  console.info(`Launching Vimspector with settings: ${vimspectorSettings}`);
+  getLogger().info(`Launching Vimspector with settings: ${vimspectorSettings}`);
   return workspace.nvim.eval(`vimspector#LaunchWithSettings(${vimspectorSettings})`);
 }
 
@@ -80,33 +81,33 @@ async function startVimspector(...args: any[]): Promise<any> {
  * This also handles the possibily of the command args being split by spaces
  * before being passed to the callback.
  */
-function getOverrides(rawArguments: any[]): any {
+function getOverrides(rawArguments: unknown[]): Record<string, unknown> {
   let args = '';
-  if (rawArguments.length == 0) {
-    args = rawArguments[0];
+  if (rawArguments.length === 0) {
+    args = (rawArguments[0] as string) ?? '';
   } else if (rawArguments.length >= 1) {
-    const a: any[] = [];
+    const a: string[] = [];
     for (const v of rawArguments) {
-      a.push(v);
+      a.push(String(v));
     }
     args = a.join(' ');
   }
   return parseOverrides(args);
 }
 
-function parseOverrides(args: string): any {
-  let overrides = {};
+function parseOverrides(args: string): Record<string, unknown> {
+  let overrides: Record<string, unknown> = {};
   if (args) {
     try {
       overrides = JSON.parse(args);
-    } catch (e) {
+    } catch {
       window.showErrorMessage(`Expected valid JSON for Vimspector settings, but got: ${args}`, 'error');
     }
   }
   return overrides;
 }
 
-function showCommandResult(func: () => Promise<any>): (...args: any[]) => Promise<string | undefined> {
+function showCommandResult(func: () => Promise<unknown>): (...args: unknown[]) => Promise<string | undefined> {
   return async () => {
     const result = await func();
     const json = JSON.stringify(result, null, 2);
@@ -118,19 +119,19 @@ function initVimspectorConfig(): void {
   const config = workspace.getConfiguration('java.debug.vimspector.config');
   const shouldCreate = config.get<boolean>('createIfNotExists');
   if (!shouldCreate) {
-    console.debug(`Vimspector default config creation is not enabled. Skipping creation.`);
+    getLogger().debug(`Vimspector default config creation is not enabled. Skipping creation.`);
     return;
   }
 
   const configPath = path.resolve(workspace.root, VIMSPECTOR_CONFIG_FILE);
   if (fs.existsSync(configPath)) {
-    console.debug(`${VIMSPECTOR_CONFIG_FILE} already exists. Skipping creation.`);
+    getLogger().debug(`${VIMSPECTOR_CONFIG_FILE} already exists. Skipping creation.`);
     return;
   }
 
   try {
     fs.writeFileSync(configPath, JSON.stringify(vimspectorJson, null, 2));
   } catch (e) {
-    console.error(`Failed to write ${VIMSPECTOR_CONFIG_FILE}`, e);
+    getLogger().error(`Failed to write ${VIMSPECTOR_CONFIG_FILE}`, e);
   }
 }

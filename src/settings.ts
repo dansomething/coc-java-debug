@@ -1,6 +1,7 @@
 import { commands, workspace } from 'coc.nvim';
 import { substituteFilterVariables } from './classFilter';
-import { Commands } from './commands';
+import * as Commands from './commands';
+import { getLogger } from './logger';
 
 export function onConfigurationChange() {
   return workspace.onDidChangeConfiguration((params) => {
@@ -79,10 +80,10 @@ export async function updateDebugSettings() {
           logLevel,
         }),
       );
-      console.debug('settings:', settings);
+      getLogger().debug('settings:', settings);
     } catch (err) {
       // log a warning message and continue, since update settings failure should not block debug session
-      console.error('Cannot update debug settings.', err);
+      getLogger().error('Cannot update debug settings.', err);
     }
   }
 }

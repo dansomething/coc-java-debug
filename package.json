@@ -25,8 +25,8 @@
     "vimspector"
   ],
   "engines": {
-    "coc": ">=0.0.80",
-    "node": ">=10.0.0"
+    "coc": ">=0.0.82",
+    "node": ">=18.20.0"
   },
   "scripts": {
     "build": "node esbuild.mjs",
@@ -35,7 +35,8 @@
     "lint": "eslint && prettier --check .",
     "prepare": "npm-run-all clean build",
     "release": "np --no-tests",
-    "watch": "node esbuild.mjs --watch"
+    "update": "ncu --peer --enginesNode",
+    "watch": "NODE_ENV=development node esbuild.mjs --watch"
   },
   "prettier": {
     "singleQuote": true,
@@ -44,18 +45,19 @@
   },
   "devDependencies": {
     "@types/node": "^12.20.55",
-    "@typescript-eslint/eslint-plugin": "7.0.1",
-    "@typescript-eslint/parser": "7.0.1",
+    "@typescript-eslint/eslint-plugin": "^8.35.1",
+    "@typescript-eslint/parser": "^8.35.1",
     "coc.nvim": "^0.0.82",
-    "esbuild": "^0.23.0",
-    "eslint": "^8.57.0",
-    "eslint-config-prettier": "^9.1.0",
-    "eslint-plugin-prettier": "^5.2.1",
-    "np": "^10.0.7",
+    "esbuild": "^0.25.5",
+    "eslint": "^9.30.1",
+    "eslint-config-prettier": "^10.1.5",
+    "eslint-plugin-prettier": "^5.5.1",
+    "np": "10.2.0",
+    "npm-check-updates": "^18.0.1",
     "npm-run-all": "^4.1.5",
-    "prettier": "^3.3.3",
-    "rimraf": "^5.0.5",
-    "typescript": "^4.9.5"
+    "prettier": "^3.6.2",
+    "rimraf": "^5.0.10",
+    "typescript": "^4"
   },
   "activationEvents": [
     "onLanguage:java"

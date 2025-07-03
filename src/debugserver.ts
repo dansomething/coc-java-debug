@@ -1,5 +1,5 @@
 import { TextDocument, Uri, window, workspace } from 'coc.nvim';
-import { Commands, executeCommand } from './commands';
+import * as Commands from './commands';
 import { IClassPath, IMainClassOption, MainMethodResult } from './protocol';
 
 export async function resolveMainMethodCurrentFile(): Promise<IMainClassOption | undefined> {
@@ -19,7 +19,7 @@ export async function resolveMainMethodsCurrentFile(): Promise<MainMethodResult>
 
 async function resolveMainMethod(document: TextDocument): Promise<MainMethodResult> {
   const resourcePath = getJavaResourcePath(document);
-  return executeCommand(Commands.JAVA_RESOLVE_MAINMETHOD, resourcePath);
+  return Commands.executeCommand(Commands.JAVA_RESOLVE_MAINMETHOD, resourcePath);
 }
 
 export async function resolveClassPathCurrentFile(): Promise<IClassPath> {
@@ -31,13 +31,13 @@ export async function resolveClassPathCurrentFile(): Promise<IClassPath> {
 }
 
 export async function resolveClassPathMainMethod(mainMethod: IMainClassOption): Promise<IClassPath> {
-  const classPath: any[] = await resolveClasspath(mainMethod.mainClass, mainMethod.projectName || '');
-  const [modulePaths, classPaths] = classPath;
+  const classPath = await resolveClasspath(mainMethod.mainClass, mainMethod.projectName || '');
+  const [modulePaths, classPaths]: [string[], string[]] = classPath;
   return { modulePaths, classPaths };
 }
 
-async function resolveClasspath(mainClass: string, projectName: string, scope?: string): Promise<any[]> {
-  return executeCommand(Commands.JAVA_RESOLVE_CLASSPATH, mainClass, projectName, scope);
+async function resolveClasspath(mainClass: string, projectName: string, scope?: string): Promise<[string[], string[]]> {
+  return Commands.executeCommand(Commands.JAVA_RESOLVE_CLASSPATH, mainClass, projectName, scope);
 }
 
 function getJavaResourcePath(document: TextDocument): string | undefined {
